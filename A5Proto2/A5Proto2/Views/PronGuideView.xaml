@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="A5Proto2.Views.PronGuideView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:models="clr-namespace:A5Proto2.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <UserControl.Resources>
+        <Style x:Key="selctionItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Style.Resources>
+                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="LightBlue"/>
+                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue"/>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <ListBox Name="phraseBox" Width="200" DockPanel.Dock="Right" FontSize="15" ItemsSource="{Binding Phrases}" SelectedIndex="0" ItemContainerStyle="{StaticResource selctionItemStyle}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding PhraseText}"></Label>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="40" HorizontalAlignment="Center">
+            <ItemsControl Name="selectedPhrase" ItemsSource="{Binding Path=SelectedItems, ElementName=phraseBox}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ListBox ItemsSource="{Binding Phonemes}" SelectionChanged="ListBox_SelectionChanged" SelectedIndex="0" ItemContainerStyle="{StaticResource selctionItemStyle}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Label Content="{Binding}" Width="150" Margin="0,0,20,0" FontWeight="Bold" FontSize="18" HorizontalContentAlignment="Center">
+                                        <Label.ToolTip>
+                                            <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                                <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                                <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Each syllable can be selected for a detailed
+                                                    description of how to pronounce it, and a animated video of a mouth and inside of a mouth prounouncing the
+                                                    syllable.
+                                                </TextBox>
+                                            </StackPanel>
+                                        </Label.ToolTip>
+                                    </Label>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Left">
+            <Image Source="../Assets/Images/newFace1.jpg" Height="400"/>
+            <MediaElement Name="mePlayer" LoadedBehavior="Manual" Stretch="None" Height="0"/>
+            <StatusBar Grid.Column="2" Height="Auto">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <Button Height="30" Width="30" Padding="0" Margin="0" Click="playPron">
+                        <Image Source="../Assets/Images/play1.jpg">
+                            <Image.ToolTip>
+                                <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                    <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                    <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">This plays a short video of a mouth and cut-away side view 
+                                        of a mouth prounoucing the selected syllable.
+                                    </TextBox>
+                                </StackPanel>
+                            </Image.ToolTip>
+                        </Image>
+                    </Button>
+                    <Button Height="30" Width="30" Padding="0" Margin="0">
+                        <Image Source="../Assets/Images/pause1.jpg"/>
+                    </Button>
+                    <Button Height="30" Width="30" Padding="0" Margin="0">
+                        <Image Source="../Assets/Images/stop1.jpg"/>
+                    </Button>
+                </StackPanel>
+
+                <StatusBarItem Grid.Column="1">
+                    <TextBlock Name="lblProgressStatus">00:00:00</TextBlock>
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="2" HorizontalContentAlignment="Stretch">
+                    <Slider Name="sliProgress" />
+                </StatusBarItem>
+                <StatusBarItem Grid.Column="3">
+                    <ProgressBar Name="pbVolume" Width="50" Height="12" Maximum="1" Value="{Binding ElementName=mePlayer, Path=Volume}" />
+                </StatusBarItem>
+            </StatusBar>
+
+            <TextBlock Text="How to Pronounce:&#x0a; To make the consonant sound /k/-/K/ ...&#x0a;&#x0a;
+                       " Height="60"></TextBlock>
+
+            <StackPanel Background="LightGoldenrodYellow" Margin="0" Width="520" Height="120">
+                <Label Content="Demo Note:" FontSize="13" FontWeight="Bold" Height="25" Margin="0,0,0,0"></Label>
+                <TextBox TextWrapping="Wrap" IsReadOnly="True" FontSize="13" Margin="3,0,3,0">This box will contain an explanation of how to pronounce the above selected syllable.&#x0a;
+                       When play is pressed an animation of a front view of a person's mouth and side view of a person's trachea&#x0a;
+                       pronouncing the syllable will be played, along with the sound of the syllable.&#x0a;
+                    The above image is shown as example to convey the idea. In the final product this would be a animated video.
+                </TextBox>
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,194 @@
+﻿<UserControl x:Class="A5Proto2.Views.ProgReviewView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1024">
+    <UserControl.Resources>
+        <Style x:Key="accBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="0" />
+        </Style>
+        <DataTemplate x:Key="PhonemeTemplate">
+            <Button Content="{Binding}" Background="Gray" Foreground="White" FontSize="16" Margin="1,4,1,4" Padding="4,0,4,0">
+                <Button.ToolTip>
+                    <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                        <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                        <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the individual syllables speaks just that
+                        syllable, so the user can easily break down the sounds of the word.</TextBox>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+        </DataTemplate>
+        <Style
+            TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate 
+                        TargetType="{x:Type ProgressBar}">
+                        <Grid Margin="4,0,4,0">
+                            <Rectangle Name="PART_Track" Fill="LightGray" Stroke="Gray" StrokeThickness="2" />
+                            <Rectangle Name="PART_Indicator" Fill="LightGreen" Stroke="Gray" StrokeThickness="2" HorizontalAlignment="Left" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel>
+        <TabControl>
+            <TabItem Header="Words and Phrases (A-Z)" Width="507" FontSize="16" FontWeight="Bold">
+                <ScrollViewer Height="650">
+                    <DataGrid Name="ReviewGrid" ItemsSource="{Binding Phrases}" AutoGenerateColumns="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="LightSlateGray"/>
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="SeparatorBrush" Value="White" />
+                                <!-- should these be showing up ?? -->
+                                <Setter Property="Padding" Value="5 0 0 0"/>
+                                <Setter Property="Height" Value="25"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Style>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="LightBlue"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="LightBlue"/>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Word/Phrase" Width="660" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Label Content="{Binding PhraseText}" FontSize="15" FontWeight="Normal" Margin="10,3,3,3"></Label>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Appearances" Width="150" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Label Content="{Binding AppearanceCnt}" FontSize="15"></Label>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Word Score" Width="175" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ProgressBar Minimum="0" Maximum="100" Value="{Binding PhraseScore}" Height="18"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="7,3,3,3" >
+                                    <StackPanel Width="655">
+                                        <StackPanel Orientation="Horizontal" Margin="5,0">
+                                            <Button Padding="0" Height="23" Width="23" Margin="0">
+                                                <Image Source="../Assets/Images/speaker2.jpg" Margin="0">
+                                                    <Image.ToolTip>
+                                                        <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                                            <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                                            <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the speaker btn next to the phrase
+                                                    speaks the phrase clearly at a normal speed.
+                                                            </TextBox>
+                                                        </StackPanel>
+                                                    </Image.ToolTip>
+                                                </Image>
+                                            </Button>
+                                            <Label Name="engTextLab" Content="{Binding PhraseText}" FontWeight="SemiBold" FontSize="16" Margin="5,0,18,0"/>
+                                            <Label Content=" -- " FontSize="17" Margin="5,0,5,0"/>
+                                            <Label Name="natTextLab" Content="{Binding NativeText}" FontWeight="SemiBold" FontSize="16" Margin="18,0,5,0"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Padding="0" Height="23" Width="23" Margin="5,0">
+                                                <Image Source="../Assets/Images/speaker2.jpg" Margin="0">
+                                                    <Image.ToolTip>
+                                                        <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                                            <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                                            <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the speaker btn next to the syllables
+                                                    speaks the phrase slowly, letting you hear each syllable.
+                                                            </TextBox>
+                                                        </StackPanel>
+                                                    </Image.ToolTip>
+                                                </Image>
+                                            </Button>
+                                            <ItemsControl ItemsSource="{Binding Phonemes}" ItemTemplate="{StaticResource PhonemeTemplate}" 
+                                    Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="5,0,10,0" FontWeight="Normal">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel Orientation="Horizontal"/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                            <Label Content=" -- " FontSize="17" Margin="5,0,5,0"/>
+                                            <Button Height ="28" Content="Pronunciation Guide >" Margin="10,0,5,0" Click="goToPronMode" Background="Gray" Foreground="White" FontSize="13" Padding="1,0,1,0"/>
+                                        </StackPanel>
+
+                                        <!-- <TextBlock Text="{Binding RomanizedNativeText}"/> -->
+                                        <Label Content="Example:" FontSize="14" FontWeight="SemiBold" Margin="0,10,4,0"></Label>
+                                        <TextBlock Margin="5,5,5,0" Text="{Binding ExampleEnglish}" FontSize="13" TextWrapping="Wrap" FontWeight="Normal"/>
+                                        <TextBlock Margin="5,5,5,0" Text="{Binding ExampleNative}" FontSize="13" TextWrapping="Wrap" FontWeight="Normal"/>
+                                        <Label Content="Problems with pronunciation:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding PronounceProbs}" FontSize="13" FontWeight="Normal"/>
+                                        <Label Content="Sometimes confuse with:" FontSize="14" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                        <TextBlock Text="{Binding ConfuseWith}" FontSize="13" FontWeight="Normal"/>
+                                    </StackPanel>
+                                    <Border Style="{StaticResource accBorderStyle}" Background="WhiteSmoke">
+                                        <StackPanel Margin="0" Width="320">
+                                            <Label Content="Appeared in Conversations" Background="SlateGray" Foreground="White"></Label>
+                                            <Label Content="Introductions:"></Label>
+                                            <StackPanel Name="IntroPanel" Visibility="Visible" Height="Auto">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Group Intro 1" FontSize="13" FontWeight="Normal"></Label>
+                                                    <Button Height ="28" Content="Practice >" Background="Gray" Foreground="White" FontSize="13" Padding="1,0,1,0" Margin="99,2,2,2">
+                                                        <Button.ToolTip>
+                                                            <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                                                <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                                                <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">This brings the user to the conversation screen
+                                                                to allow them to practice a conversation they have previously seen. (out of context of the game). When finished
+                                                                they are returned to this screen.</TextBox>
+                                                            </StackPanel>
+                                                        </Button.ToolTip>
+                                                    </Button>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Meeting Tom in Accounts" FontSize="13" FontWeight="Normal"></Label>
+                                                    <Button Height ="28" Content="Practice >" Background="Gray" Foreground="White" FontSize="13" Padding="1,0,1,0" Margin="30,2,2,2">
+                                                        <Button.ToolTip>
+                                                            <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                                                <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                                                <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">This brings the user to the conversation screen
+                                                                to allow them to practice a conversation they have previously seen (out of context of the game). When finished
+                                                                they are returned to this screen.</TextBox>
+                                                            </StackPanel>
+                                                        </Button.ToolTip>
+                                                    </Button>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Conversations (By Topic)" Width="507" FontSize="16" FontWeight="Bold">
+                <Grid Height="650">
+                    <StackPanel Background="LightGoldenrodYellow" Margin="70" Width="290" Height="160">
+                        <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                        <TextBox TextWrapping="Wrap" Width="270" IsReadOnly="True" FontSize="13">The conversation tab is out of scope for the demo.
+                        It would show a listing of previously seen conversations grouped by topic (such as business travel).
+                        Giving the user the ability to review how they scored in each converstation and the ability to practice the 
+                        phrases again.
+                        </TextBox>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>

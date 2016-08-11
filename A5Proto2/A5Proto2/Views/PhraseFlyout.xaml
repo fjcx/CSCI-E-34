@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="A5Proto2.Views.PhraseFlyout"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="60" >
+    <UserControl.Resources>
+        <DataTemplate x:Key="PhonemeTemplate">
+            <Button Content="{Binding}" Background="Gray" Foreground="White" FontSize="16" Margin="1,4,1,4" Padding="4,0,4,0">
+                <Button.ToolTip>
+                    <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                        <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                        <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the individual syllables speaks just that
+                            syllable, so the user can easily break down the sounds of the word.</TextBox>
+                    </StackPanel>
+                </Button.ToolTip>
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="0">
+       <Border BorderThickness="0,0,0,2" Margin="4,0,4,0" Padding="0">
+            <Border.BorderBrush>
+                <DrawingBrush Viewport="0,0,4,4" ViewportUnits="Absolute" TileMode="Tile">
+                    <DrawingBrush.Drawing>
+                        <DrawingGroup>
+                            <GeometryDrawing Brush="Gray" >
+                                <GeometryDrawing.Geometry>
+                                    <GeometryGroup>
+                                        <RectangleGeometry Rect="0,0,50,50" />
+                                        <RectangleGeometry Rect="50,50,50,50" />
+                                    </GeometryGroup>
+                                </GeometryDrawing.Geometry>
+                            </GeometryDrawing>
+                        </DrawingGroup>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Border.BorderBrush>
+            <Button Name="flyoutBtn" Content="{Binding PhraseText}" Foreground="{Binding TextColor}" FontSize="18" Click="popClick" BorderThickness="0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                    Padding="0" Margin="0"></Button>
+            <!--<TextBlock Text="Content Goes Here!" Margin="5"/> -->
+       </Border>
+        
+        <Popup x:Name="popInformation"  
+       Placement="Top"
+       IsOpen="False"
+       Width="Auto" Height="Auto"
+       AllowsTransparency="True"
+       StaysOpen="False"
+       PopupAnimation="Scroll"
+       HorizontalAlignment="Right"
+       VerticalAlignment="Top"
+       HorizontalOffset="-190" VerticalOffset="-10" >
+            <Grid Margin="10">
+                <Path Fill="WhiteSmoke" Stretch="Fill" 
+              Stroke="LightGray" 
+                StrokeThickness="3" StrokeLineJoin="Miter"
+                Margin="0" Data="M130,154 L427.5,154 427.5,
+              240.5 299.5,240.5 287.5,245.5 275.5,240.5 130,240.5 z">
+                    <Path.Effect>
+                        <DropShadowEffect BlurRadius="12" Color="Black" Direction="315" Opacity="0.8"/>
+                    </Path.Effect>
+                </Path>
+
+                <Grid Height="Auto" Margin="8,4,8,4" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="0,5,0,30">
+                        <StackPanel Name="expectedWordPanel" Visibility="Collapsed" Margin="0">
+                            <Label Content="Expected Word:" FontWeight="Bold" FontSize="16" Margin="0" Padding="5,3"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0">
+                            <Button Padding="0" Height="23" Width="23" Margin="0">
+                                <Image Source="../Assets/Images/speaker2.jpg" Margin="0">
+                                    <Image.ToolTip>
+                                        <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                            <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                            <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the speaker btn next to the phrase
+                                                speaks the phrase clearly at a normal speed.
+                                            </TextBox>
+                                        </StackPanel>
+                                    </Image.ToolTip>
+                                </Image>
+                            </Button>
+                            <Label Name="engTextLab" Content="{Binding PhraseText}" FontWeight="SemiBold" FontSize="16" Margin="5,0,18,0"/>
+                            <Label Content=" -- " FontSize="17" Margin="5,0,5,0"/>
+                            <Label Name="natTextLab" Content="{Binding NativeText}" FontWeight="SemiBold" FontSize="16" Margin="18,0,5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5,0">
+                            <Button Padding="0" Height="23" Width="23" Margin="0">
+                                <Image Source="../Assets/Images/speaker2.jpg" Margin="0">
+                                    <Image.ToolTip>
+                                        <StackPanel Background="LightGoldenrodYellow" Margin="0">
+                                            <Label Content="Demo Note:" FontSize="13" FontWeight="Bold"></Label>
+                                            <TextBox TextWrapping="Wrap" Width="250" IsReadOnly="True" FontSize="13">Clicking the speaker btn next to the syllables
+                                                speaks the phrase at a slower rate, enunciating the syllables clearly.
+                                            </TextBox>
+                                        </StackPanel>
+                                    </Image.ToolTip>
+                                </Image>
+                            </Button>
+                            <ItemsControl ItemsSource="{Binding Phonemes}" ItemTemplate="{StaticResource PhonemeTemplate}" 
+                                Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="5,0,10,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                            <!--<Button Content="wer"/>
+                            <Button Content="kin"/>-->
+                            <Label Content=" -- " FontSize="17" Margin="5,0,5,0"/>
+                            <Button Height ="28" Content="Pronunciation Guide >" Margin="10,0,5,0" Click="goToPronMode" Background="Gray" Foreground="White" FontSize="13" Padding="1,0,1,0"/>
+                        </StackPanel>
+                    <!--    <Label Content="{Binding NativeText}" FontSize="15"/>
+                        <Label Content="{Binding RomanizedNativeText}" FontSize="15"/> -->
+                        <Label Content="Example:" FontSize="14" FontWeight="SemiBold" Margin="0,0,4,0"></Label>
+                        <TextBlock Margin="5,0,5,0" Text="{Binding ExampleEnglish}" FontSize="13" Width="420" TextWrapping="Wrap"/>
+                        <TextBlock Margin="5,0,5,0" Text="{Binding ExampleNative}" FontSize="13" Width="420" TextWrapping="Wrap"/>
+                        <StackPanel Name="incorrectWordPanel" Visibility="Collapsed">
+                            <Separator></Separator>
+                            <Label Content="Word Spoken:" FontWeight="Bold" Foreground="Red" FontSize="16" Margin="0" Padding="5,5,5,3"/>
+                            <StackPanel Orientation="Horizontal" Margin="5,0">
+                                <Button Padding="0" Height="23" Width="23" Margin="0">
+                                    <Image Source="../Assets/Images/speaker2.jpg" Margin="0"/>
+                                </Button>
+                                <Label Name="incorrectPhraseText"  FontSize="16" Margin="5,0,18,0"/>
+                                <Label Content=" -- " FontSize="17" Margin="5,0,5,0"/>
+                                <Label Name="incorrectNativeText" FontSize="16" Margin="18,0,5,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="5,0">
+                                <Button Padding="0" Height="23" Width="23" Margin="0">
+                                    <Image Source="../Assets/Images/speaker2.jpg" Margin="0"/>
+                                </Button>
+                                <ItemsControl Name="incorrectPhonemes" ItemTemplate="{StaticResource PhonemeTemplate}" IsVisibleChanged="seePhonemeNow"
+                                Background="Transparent" BorderBrush="Red" BorderThickness="0" Margin="5,0,10,0">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </StackPanel>
+                            <Label Content="Example:" FontSize="14" FontWeight="SemiBold" Margin="0,0,4,0"></Label>
+                            <TextBlock Margin="5,0,5,0" Name="incorrectWordExEnglish" FontSize="13" Width="420" TextWrapping="Wrap"/>
+                            <TextBlock Margin="5,0,5,0" Name="incorrectWordExNative" FontSize="13" Width="420" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Popup>
+    </Grid>
+    
+</UserControl>
